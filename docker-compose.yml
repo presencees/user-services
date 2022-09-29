@@ -1,33 +1,45 @@
-version: '3'
+version: "3"
 services:
-  rest:
+  user:
     build:
       context: .
-    image: 'fikridulumina/base-nodejs:dev-1.0.0'
-    container_name: rest_auth
+    image: "fikridulumina/user-services:dev-1.0.0"
+    container_name: rest_user
     ports:
-      - '${APP_PORT}:${APP_PORT}'
+      - "${APP_PORT}:${APP_PORT}"
     volumes:
-      - './:/opt/app'
+      - "./:/opt/app"
     depends_on:
-      - dbMysql
+      - dbUser
     networks:
-      - auth
-
-  dbMysql:
-    image: 'mysql:5.7'
-    container_name: db_auth
+      - user
+  dbUser:
+    image: "mysql:5.7"
+    container_name: db_user
     restart: always
     environment:
-      MYSQL_DATABASE: '${DB_NAME}'
-      MYSQL_USER: '${DB_USER}'
-      MYSQL_PASSWORD: '${DB_PASS}'
-      MYSQL_ROOT_PASSWORD: '${DB_ROOT_PASS}'
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASSWORD: "${DB_PASS}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASS}"
     ports:
-      - '${DB_PORT}'
+      - "${DB_PORT}"
     volumes:
-      - './my-db:/var/lib/mysql'
+      - "./my-db:/var/lib/mysql"
     networks:
-      - auth
+      - user
+  dbUserPma:
+    depends_on:
+      - dbUser
+    image: phpmyadmin/phpmyadmin
+    container_name: dbUserPma
+    restart: always
+    ports:
+      - "3030:80"
+    environment:
+      PMA_HOST: dbUser
+    networks:
+      user: null
+
 networks:
-  auth: null
+  user: null
