@@ -4,7 +4,7 @@ services:
     build:
       context: .
     image: "fikridulumina/user-services:dev-1.0.0"
-    container_name: rest_user
+    container_name: app_user
     ports:
       - "${APP_PORT}:${APP_PORT}"
     volumes:
@@ -35,11 +35,11 @@ services:
     container_name: dbUserPma
     restart: always
     ports:
-      - "3030:80"
+      - "3031:80"
     environment:
       PMA_HOST: dbUser
     networks:
-      user: null
+      - user
 
 networks:
   user: null

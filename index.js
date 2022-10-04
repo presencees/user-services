@@ -36,6 +36,18 @@ conn.connect((err) => {
 });
 
 // router
+
+app.get("/", (req, res) => {
+  res.setHeader("content-type", "application/json");
+  res.send(
+    JSON.stringify({
+      status: 200,
+      error: null,
+      message: "user services is available",
+    })
+  );
+});
+
 app.get("/user/mahasiswa/:userId", async (req, res) => {
   const userId = req.params.userId;
   let sql =
