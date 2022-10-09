@@ -48,7 +48,7 @@ app.get("/", (req, res) => {
   );
 });
 
-app.get("/user/mahasiswa/:userId", async (req, res) => {
+app.get("/mahasiswa/:userId", async (req, res) => {
   const userId = req.params.userId;
   let sql =
     "SELECT * FROM users u inner join mahasiswa m on m.user_id=u.user_id WHERE u.user_id='" +
@@ -66,7 +66,7 @@ app.get("/user/mahasiswa/:userId", async (req, res) => {
   });
 });
 
-app.get("/user/dosen/:userId", async (req, res) => {
+app.get("/dosen/:userId", async (req, res) => {
   const userId = req.params.userId;
   let sql =
     "SELECT * FROM users u inner join dosen m on m.user_id=u.user_id WHERE u.user_id='" +
