@@ -5,14 +5,16 @@ services:
       context: .
     image: "fikridulumina/user-services:dev-1.0.0"
     container_name: app_user
-    ports:
-      - "${APP_PORT}:${APP_PORT}"
     volumes:
-      - "./:/opt/app"
+      - "./.env/:/opt/app/.env"
+      - "./index.js/:/opt/app/index.js"
     depends_on:
       - dbUser
     networks:
-      - user
+      - kong-net
+    restart: always
+    command: sh -c "node index.js"
+
   dbUser:
     image: "mysql:5.7"
     container_name: db_user
@@ -27,19 +29,8 @@ services:
     volumes:
       - "./my-db:/var/lib/mysql"
     networks:
-      - user
-  dbUserPma:
-    depends_on:
-      - dbUser
-    image: phpmyadmin/phpmyadmin
-    container_name: dbUserPma
-    restart: always
-    ports:
-      - "3031:80"
-    environment:
-      PMA_HOST: dbUser
-    networks:
-      - user
+      - kong-net
 
 networks:
-  user: null
+  kong-net:
+    external: true
