@@ -13,7 +13,7 @@ services:
     networks:
       - kong-net
     restart: always
-    command: sh -c "node index.js"
+    command: sh -c "${RUNNER} index.js"
 
   dbUser:
     image: "mysql:5.7"
