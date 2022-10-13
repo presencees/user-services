@@ -48,6 +48,63 @@ app.get("/", (req, res) => {
   );
 });
 
+app.get("/user/:userId", async (req, res) => {
+  let userData = {};
+  const userId = req.params.userId;
+  let sql =
+    "SELECT * FROM users WHERE user_id='" +
+    userId +
+    "'";
+  conn.query(sql, (err, results) => {
+    if (err) throw err;
+    if (results.length <= 0) {
+      data = { status: 200, error: "Tidak ada data ditemukan", response: [] };
+      returnApi(res, data);
+    } else {
+      switch (String(results[0].user_type)) {
+        case "1":
+          let sql1 =
+            "SELECT * FROM users u inner join mahasiswa m on m.user_id=u.user_id WHERE u.user_id='" +
+            userId +
+            "'";
+          conn.query(sql1, (err, results) => {
+            if (err) throw err;
+            if (results.length <= 0) {
+              data = { status: 200, error: "Tidak ada data ditemukan", response: [] };
+              returnApi(res, data);
+            } else {
+              data = { status: 200, error: null, response: results[0] };
+              returnApi(res, data);
+            }
+          });
+          break;
+      
+        case "2":
+          let sql2 =
+            "SELECT * FROM users u inner join dosen m on m.user_id=u.user_id WHERE u.user_id='" +
+            userId +
+            "'";
+          conn.query(sql2, (err, results) => {
+            if (err) throw err;
+            if (results.length <= 0) {
+              data = { status: 200, error: "Tidak ada data ditemukan", response: [] };
+              returnApi(res, data);
+            } else {
+              data = { status: 200, error: null, response: results[0] };
+              returnApi(res, data);
+            }
+          });
+          break;
+      
+        default:
+          data = { status: 200, error: "Tidak ada data ditemukan", response: [] };
+          returnApi(res, data);
+          break;
+      }
+    }
+  });
+});
+
 app.get("/mahasiswa/:userId", async (req, res) => {
   const userId = req.params.userId;
   let sql =
