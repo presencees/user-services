@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.3
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: dbUser
--- Waktu pembuatan: 29 Sep 2022 pada 19.05
--- Versi server: 5.7.38
--- Versi PHP: 8.0.15
+-- Waktu pembuatan: 24 Okt 2022 pada 16.04
+-- Versi server: 5.7.40
+-- Versi PHP: 8.0.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -78,6 +78,7 @@ INSERT INTO `mahasiswa` (`mahasiswa_id`, `user_id`, `nim`, `generation`, `status
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `user_name` varchar(100) NOT NULL,
+  `full_name` varchar(50) NOT NULL,
   `user_adrdess` varchar(200) NOT NULL,
   `user_type` int(11) NOT NULL COMMENT '1=Mahasiswa | 2=Dosen'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -86,17 +87,17 @@ CREATE TABLE `users` (
 -- Dumping data untuk tabel `users`
 --
 
-INSERT INTO `users` (`user_id`, `user_name`, `user_adrdess`, `user_type`) VALUES
-(1, 'Sadye', '160 Schurz Place', 1),
-(2, 'Joly', '0508 Clemons Drive', 1),
-(3, 'Fedora', '37742 Golden Leaf Avenue', 1),
-(4, 'Ebenezer', '91898 Nova Lane', 1),
-(5, 'Myrah', '83780 Vermont Point', 1),
-(6, 'Maudie', '16 Saint Paul Trail', 2),
-(7, 'Hervey', '65510 East Court', 2),
-(8, 'Marley', '611 Knutson Junction', 2),
-(9, 'Munmro', '13615 Milwaukee Hill', 2),
-(10, 'Cherish', '9925 Portage Plaza', 2);
+INSERT INTO `users` (`user_id`, `user_name`, `full_name`, `user_adrdess`, `user_type`) VALUES
+(1, 'Sadye', 'Sadye', '160 Schurz Place', 1),
+(2, 'Joly', 'Joly', '0508 Clemons Drive', 1),
+(3, 'Fedora', 'Fedora', '37742 Golden Leaf Avenue', 1),
+(4, 'Ebenezer', 'Ebenezer', '91898 Nova Lane', 1),
+(5, 'Myrah', 'Myrah', '83780 Vermont Point', 1),
+(6, 'Maudie', 'Maudie', '16 Saint Paul Trail', 2),
+(7, 'Hervey', 'Hervey', '65510 East Court', 2),
+(8, 'Marley', 'Marley', '611 Knutson Junction', 2),
+(9, 'Munmro', 'Munmro', '13615 Milwaukee Hill', 2),
+(10, 'Yusril', 'Yusril', '9925 Portage Plaza', 2);
 
 --
 -- Indexes for dumped tables
