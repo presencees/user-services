@@ -1,4 +1,4 @@
-const { select } = require("@nodejscart/mysql-query-builder");
+const {select} = require("@nodejscart/mysql-query-builder");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mysql = require("mysql");
@@ -58,7 +58,7 @@ app.get("/user/:userId", async (req, res) => {
   conn.query(sql, (err, results) => {
     if (err) throw err;
     if (results.length <= 0) {
-      data = { status: 200, error: "Tidak ada data ditemukan", response: [] };
+      data = {status: 200, error: "Tidak ada data ditemukan", response: []};
       returnApi(res, data);
     } else {
       switch (String(results[0].user_type)) {
@@ -70,15 +70,15 @@ app.get("/user/:userId", async (req, res) => {
           conn.query(sql1, (err, results) => {
             if (err) throw err;
             if (results.length <= 0) {
-              data = { status: 200, error: "Tidak ada data ditemukan", response: [] };
+              data = {status: 200, error: "Tidak ada data ditemukan", response: []};
               returnApi(res, data);
             } else {
-              data = { status: 200, error: null, response: results[0] };
+              data = {status: 200, error: null, response: results[0]};
               returnApi(res, data);
             }
           });
           break;
-      
+
         case "2":
           let sql2 =
             "SELECT * FROM users u inner join dosen m on m.user_id=u.user_id WHERE u.user_id='" +
@@ -87,17 +87,17 @@ app.get("/user/:userId", async (req, res) => {
           conn.query(sql2, (err, results) => {
             if (err) throw err;
             if (results.length <= 0) {
-              data = { status: 200, error: "Tidak ada data ditemukan", response: [] };
+              data = {status: 200, error: "Tidak ada data ditemukan", response: []};
               returnApi(res, data);
             } else {
-              data = { status: 200, error: null, response: results[0] };
+              data = {status: 200, error: null, response: results[0]};
               returnApi(res, data);
             }
           });
           break;
-      
+
         default:
-          data = { status: 200, error: "Tidak ada data ditemukan", response: [] };
+          data = {status: 200, error: "Tidak ada data ditemukan", response: []};
           returnApi(res, data);
           break;
       }
@@ -114,10 +114,10 @@ app.get("/mahasiswa/:userId", async (req, res) => {
   conn.query(sql, (err, results) => {
     if (err) throw err;
     if (results.length <= 0) {
-      data = { status: 200, error: "Tidak ada data ditemukan", response: [] };
+      data = {status: 200, error: "Tidak ada data ditemukan", response: []};
       returnApi(res, data);
     } else {
-      data = { status: 200, error: null, response: results[0] };
+      data = {status: 200, error: null, response: results[0]};
       returnApi(res, data);
     }
   });
@@ -132,48 +132,51 @@ app.get("/dosen/:userId", async (req, res) => {
   conn.query(sql, (err, results) => {
     if (err) throw err;
     if (results.length <= 0) {
-      data = { status: 200, error: "Tidak ada data ditemukan", response: [] };
+      data = {status: 200, error: "Tidak ada data ditemukan", response: []};
       returnApi(res, data);
     } else {
-      data = { status: 200, error: null, response: results[0] };
+      data = {status: 200, error: null, response: results[0]};
       returnApi(res, data);
     }
   });
 });
 
-// functions
-function returnApi(res, data) {
-  res.setHeader("content-type", "application/json");
-  res.send(JSON.stringify(data));
-}
+// GET Mahasiswa
+app.get("/mahasiswa", async (req, res) => {
 
-function verify(token) {
-  const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
-  if (payload.exp - now > 0) {
-    return {
-      status: true,
-      msg: "Tuken sudah sesuai",
-      data: payload,
-    };
-  } else {
-    return {
-      status: false,
-      msg: "token sudah tidak berlaku.",
-      data: [],
-    };
+  let where = "";
+  let query = req.query;
+
+  const keys = Object.keys(query);
+  for (let i of keys) {
+    const r = query[i];
+    where = where + " AND " + i + " like '%" + r + "%'";
   }
-}
 
-function createJwt(userId) {
-  let jwtSecretKey = process.env.JWT_SECRET_KEY;
-  let data = {
-    iat: now,
-    exp: now + 1000 * 60 * 60 * 24, // satu hari (24 jam)
-    // exp:now, // satu hari (24 jam)
-    userId,
-  };
-  const token = jwt.sign(data, jwtSecretKey);
-  return token;
+  if (query.lenght == 0) {
+    sql =
+      "SELECT * FROM mahasiswa";
+  } else {
+    sql =
+      "SELECT * FROM mahasiswa where 1" + where;
+  }
+  conn.query(sql, (err, results) => {
+    if (err) throw err;
+    if (results.length <= 0) {
+      data = {status: 404, error: "Tidak ada data ditemukan", response: []};
+      returnApi(res, 404, data);
+    } else {
+      data = {status: 200, error: null, response: results};
+      returnApi(res, 200, data);
+    }
+  });
+});
+
+// functions
+function returnApi(res, statusCode, data) {
+  res.setHeader("content-type", "application/json");
+  res.status(statusCode);
+  res.send(JSON.stringify(data));
 }
 
 //Server listening

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  labels:
+    app: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+      - name: user-service
+        image: registry.gitlab.com/presencees/backend/user-service:latest
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+        - mountPath: /opt/app/.env
+          name: environment
+          subPath: .env
+      imagePullSecrets:
+      - name: presencees-registry-secret
+      volumes:
+      - name: environment
+        configMap:
+          name: user-service-env

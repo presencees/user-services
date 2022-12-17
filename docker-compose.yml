@@ -3,6 +3,7 @@ services:
   user:
     build:
       context: .
+      dockerfile: ./Dockerfile-compose
     image: "fikridulumina/user-services:dev-1.0.0"
     container_name: app_user
     volumes:

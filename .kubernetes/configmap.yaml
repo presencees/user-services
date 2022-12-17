@@ -1,0 +1,20 @@
+apiVersion: v1
+data:
+  .env: |
+    # ENVIRONMENT
+    TZ='Asia/Makassar'
+    ENVIRONMENT='development'
+
+    # service config
+    APP_PORT=3000
+
+    # db config
+    DB_HOST='presencees-mariadb'
+    DB_PORT='3306'
+    DB_USER='presencees'
+    DB_PASS='Ktqb3sP4eZuiqe73fmRkgrkjRx5GTxZxPu2HXeluGfprHXjzmp'
+    DB_NAME='user'
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: user-service-env
