@@ -155,10 +155,10 @@ app.get("/mahasiswa", async (req, res) => {
 
   if (query.lenght == 0) {
     sql =
-      "SELECT * FROM mahasiswa";
+      "SELECT mahasiswa.*, users.full_name FROM mahasiswa LEFT JOIN users ON mahasiswa.user_id = users.user_id";
   } else {
     sql =
-      "SELECT * FROM mahasiswa where 1" + where;
+      "SELECT mahasiswa.*, users.full_name FROM mahasiswa LEFT JOIN users ON mahasiswa.user_id = users.user_id where 1" + where;
   }
   conn.query(sql, (err, results) => {
     if (err) throw err;

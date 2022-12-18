@@ -3,8 +3,8 @@ services:
   user:
     build:
       context: .
-      dockerfile: ./Dockerfile-compose
-    image: "fikridulumina/user-services:dev-1.0.0"
+      dockerfile: Dockerfile-compose
+    image: "user-service"
     container_name: app_user
     volumes:
       - "./.env/:/opt/app/.env"
@@ -15,6 +15,8 @@ services:
       - kong-net
     restart: always
     command: sh -c "${RUNNER} index.js"
+    expose:
+      - 3000
 
   dbUser:
     image: "mysql:5.7"
